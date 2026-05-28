@@ -1,15 +1,16 @@
 // app\(public)\login\page.tsx
 "use client";
 
+import ENV_CONSTANTS from "@/app/env.constants";
 import Link from "next/link";
 
 export default function LoginPage() {
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/google";
+    window.location.href = `${ENV_CONSTANTS.NEXT_PUBLIC_BASE_URL}/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "http://localhost:5000/auth/github";
+    window.location.href = `${ENV_CONSTANTS.NEXT_PUBLIC_BASE_URL}/auth/github`;
   };
 
   return (
