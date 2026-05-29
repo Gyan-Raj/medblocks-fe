@@ -87,6 +87,7 @@ app/
 3. Backend handles the OAuth flow and sets a JWT in an `httpOnly` cookie
 4. Browser is redirected to `/dashboard`
 5. Dashboard calls `/auth/me` (cookie sent automatically) to load the user profile
+NOTE: Local auth is also supported via email/password.
 
 ## Notes
 

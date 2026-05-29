@@ -32,11 +32,22 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-lg text-center w-[350px]">
-        <img
-          src={user.avatar}
-          alt="avatar"
-          className="w-24 h-24 rounded-full mx-auto mb-4"
-        />
+        {user.avatar ? (
+          <img
+            src={user.avatar}
+            alt="avatar"
+            className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+          />
+        ) : (
+          <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-black text-white flex items-center justify-center text-2xl font-bold">
+            {user.name
+              .split(" ")
+              .map((n: string) => n[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase()}
+          </div>
+        )}
         <h1 className="text-2xl font-bold">{user.name}</h1>
         <p className="text-gray-600 mb-6">{user.email}</p>
         <button

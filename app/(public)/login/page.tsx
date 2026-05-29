@@ -1,17 +1,43 @@
 // app\(public)\login\page.tsx
 "use client";
 
-import ENV_CONSTANTS from "@/app/env.constants";
-import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { api } from "@/app/lib/api";
+import Image from "next/image";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await api.post("/auth/login", form);
+      router.replace("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleGoogleLogin = () => {
-    window.location.href = `${ENV_CONSTANTS.NEXT_PUBLIC_BASE_URL}/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = `${ENV_CONSTANTS.NEXT_PUBLIC_BASE_URL}/auth/github`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/github`;
   };
 
   return (
@@ -19,36 +45,43 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-8">Login</h1>
 
-        {/* Username Password Login */}
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Username"
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-black"
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
             className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-black"
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="border rounded-lg p-3 outline-none focus:ring-2 focus:ring-black"
-          />
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
           <button
             type="submit"
-            className="bg-black text-white rounded-lg p-3 hover:opacity-90 transition"
+            disabled={loading}
+            className="bg-black text-white rounded-lg p-3 hover:opacity-90 transition disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center gap-4 my-6">
           <div className="h-px bg-gray-300 flex-1" />
           <span className="text-sm text-gray-500">OR</span>
           <div className="h-px bg-gray-300 flex-1" />
         </div>
 
-        {/* OAuth Buttons */}
         <div className="flex flex-col gap-3">
           <button
             type="button"
@@ -99,7 +132,6 @@ export default function LoginPage() {
           </button>
         </div>
 
-        {/* Signup */}
         <p className="text-center mt-6 text-sm">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="font-semibold underline">
