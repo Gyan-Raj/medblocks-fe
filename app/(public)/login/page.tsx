@@ -2,6 +2,7 @@
 "use client";
 
 import ENV_CONSTANTS from "@/app/env.constants";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -50,17 +51,51 @@ export default function LoginPage() {
         {/* OAuth Buttons */}
         <div className="flex flex-col gap-3">
           <button
+            type="button"
             onClick={handleGoogleLogin}
-            className="border rounded-lg p-3 hover:bg-gray-100 transition"
+            className="
+      flex items-center justify-center gap-3
+      w-full
+      rounded-lg border border-gray-300
+      bg-white px-4 py-3
+      font-medium text-gray-700
+      transition-all duration-200
+      hover:bg-gray-50 hover:border-gray-400
+      focus:outline-none focus:ring-2 focus:ring-gray-300
+      cursor-pointer
+    "
           >
-            Sign in with Google
+            <Image
+              src="/icons/google.svg"
+              alt="Google"
+              width={20}
+              height={20}
+            />
+            <span>Sign in with Google</span>
           </button>
 
           <button
+            type="button"
             onClick={handleGithubLogin}
-            className="border rounded-lg p-3 hover:bg-gray-100 transition"
+            className="
+      flex items-center justify-center gap-3
+      w-full
+      rounded-lg border border-gray-300
+      bg-white px-4 py-3
+      font-medium text-gray-700
+      transition-all duration-200
+      hover:bg-gray-50 hover:border-gray-400
+      focus:outline-none focus:ring-2 focus:ring-gray-300
+      cursor-pointer
+    "
           >
-            Sign in with GitHub
+            <Image
+              src="/icons/github.svg"
+              alt="GitHub"
+              width={20}
+              height={20}
+            />
+            <span>Sign in with GitHub</span>
           </button>
         </div>
 
